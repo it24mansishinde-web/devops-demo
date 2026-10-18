@@ -1,0 +1,92 @@
+ <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2ff;
+            margin: 0;
+            padding: 30px 15px;
+            color: #1e293b;
+        }
+        .container {
+            max-width: 650px;
+            margin: auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+        }
+        h1 { text-align: center; color: #1d4ed8; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, select {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 11px;
+            margin-top: 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .success { color: green; font-weight: bold; }
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
+        th { background: #dbeafe; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Student Registration</h1>
+    <p>Fill in the details to register for a course.</p>
+
+    <p class="success" th:if="${successMessage}" th:text="${successMessage}"></p>
+
+    <form action="/register" method="post" th:object="${student}">
+        <label for="name">Full Name</label>
+        <input id="name" type="text" th:field="*{name}" required minlength="2">
+
+        <label for="email">Email Address</label>
+        <input id="email" type="email" th:field="*{email}" required>
+
+        <label for="course">Course</label>
+        <select id="course" th:field="*{course}" required>
+            <option value="">Select a course</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Computer Engineering">Computer Engineering</option>
+            <option value="Artificial Intelligence">Artificial Intelligence</option>
+            <option value="Electronics">Electronics</option>
+        </select>
+
+        <button type="submit">Register Student</button>
+    </form>
+
+    <h2>Registered Students</h2>
+    <table>
+        <thead>
+        <tr><th>Name</th><th>Email</th><th>Course</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${students}">
+            <td th:text="${s.name}"></td>
+            <td th:text="${s.email}"></td>
+            <td th:text="${s.course}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(students)}">
+            <td colspan="3">No students registered yet.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
